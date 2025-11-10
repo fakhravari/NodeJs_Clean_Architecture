@@ -1,22 +1,37 @@
-// src/app.js
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDoc = require('./docs/openapi.json'); // <-- این فایل را کپی کن داخل src/docs
+const swaggerDocs = require('./docs/swagger'); // یا './docs/openapi.json' اگر فایل JSON داری
 
 const app = express();
-app.use(bodyParser.json());
+
+// ✅ فعال‌سازی CORS برای تمام درخواست‌ها
 app.use(cors());
 
-// app.use(cors({
-//   origin: ['https://kiandent.ir', 'https://nodejs.kiandent.ir']
-// }));
+// ✅ پشتیبانی از JSON در درخواست‌ها
+app.use(bodyParser.json());
 
+// ✅ مسیرهای CRUD
 app.use('/customers', require('./routes/customerRoutes'));
 app.use('/products', require('./routes/productRoutes'));
 app.use('/orders', require('./routes/orderRoutes'));
 app.use('/orderdetails', require('./routes/orderDetailRoutes'));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+// ✅ Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.listen(3000, () => console.log('🚀 http://localhost:3000/api-docs'));
+// ✅ هندل خطاهای عمومی
+app.use((err, req, res, next) => {
+  console.error('❌ Error:', err);
+  res.status(500).json({
+    message: 'Internal Server Error',
+    error: err.message
+  });
+});
+
+// ✅ پورت سازگار با Render
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running at http://localhost:${PORT}/api-docs`);
+});
