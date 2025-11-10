@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocs = require('./docs/swagger'); // این فایل بالا 👆
+const swaggerDocs = require('./docs/swagger');
 
 const app = express();
 app.use(cors());
