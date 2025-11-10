@@ -6,6 +6,11 @@ const swaggerDoc = require('./docs/openapi.json'); // <-- این فایل را �
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
+
+// app.use(cors({
+//   origin: ['https://kiandent.ir', 'https://nodejs.kiandent.ir']
+// }));
 
 app.use('/customers', require('./routes/customerRoutes'));
 app.use('/products', require('./routes/productRoutes'));
