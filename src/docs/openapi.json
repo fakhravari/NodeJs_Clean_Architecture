@@ -1,0 +1,748 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Kiandent Node.js API",
+    "version": "1.0.0",
+    "description": "مستندات کامل Swagger برای CRUD روی Customers, Products, Orders, OrderDetails"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Customers",
+      "description": "مدیریت مشتریان"
+    },
+    {
+      "name": "Products",
+      "description": "مدیریت محصولات"
+    },
+    {
+      "name": "Orders",
+      "description": "مدیریت سفارش‌ها"
+    },
+    {
+      "name": "OrderDetails",
+      "description": "جزئیات سفارش‌ها"
+    }
+  ],
+  "paths": {
+    "/customers": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "دریافت همه مشتری‌ها",
+        "responses": {
+          "200": {
+            "description": "لیست مشتری‌ها",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Customer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "افزودن مشتری جدید",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerCreate"
+              },
+              "examples": {
+                "sample": {
+                  "value": {
+                    "FullName": "علی رضایی",
+                    "Phone": "09120000000",
+                    "Email": "ali@example.com",
+                    "City": "تهران"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "مشتری اضافه شد"
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "دریافت مشتری با ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "مشتری",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "بروزرسانی مشتری",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "بروزرسانی شد"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "حذف مشتری",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "حذف شد"
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "دریافت همه محصولات",
+        "responses": {
+          "200": {
+            "description": "لیست محصولات",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "افزودن محصول",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductCreate"
+              },
+              "examples": {
+                "sample": {
+                  "value": {
+                    "ProductName": "مسواک برقی",
+                    "Price": 750000,
+                    "Stock": 20
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "محصول اضافه شد"
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "دریافت محصول",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "محصول",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "بروزرسانی محصول",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "محصول بروزرسانی شد"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "حذف محصول",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "محصول حذف شد"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "دریافت همه سفارش‌ها",
+        "responses": {
+          "200": {
+            "description": "لیست سفارش‌ها",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "ثبت سفارش",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderCreate"
+              },
+              "examples": {
+                "sample": {
+                  "value": {
+                    "CustomerID": 1,
+                    "TotalAmount": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "سفارش ثبت شد"
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "دریافت سفارش",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "سفارش",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "بروزرسانی سفارش",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "سفارش بروزرسانی شد"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "حذف سفارش",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "سفارش حذف شد"
+          }
+        }
+      }
+    },
+    "/orderdetails": {
+      "get": {
+        "tags": [
+          "OrderDetails"
+        ],
+        "summary": "دریافت همه جزئیات سفارش",
+        "responses": {
+          "200": {
+            "description": "لیست جزئیات",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderDetail"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "OrderDetails"
+        ],
+        "summary": "افزودن جزئیات سفارش",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDetailCreate"
+              },
+              "examples": {
+                "sample": {
+                  "value": {
+                    "OrderID": 1,
+                    "ProductID": 1,
+                    "Quantity": 2,
+                    "UnitPrice": 750000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "جزئیات سفارش اضافه شد"
+          }
+        }
+      }
+    },
+    "/orderdetails/{id}": {
+      "get": {
+        "tags": [
+          "OrderDetails"
+        ],
+        "summary": "دریافت جزئیات سفارش",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "جزئیات",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDetail"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "OrderDetails"
+        ],
+        "summary": "بروزرسانی جزئیات سفارش",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDetailUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "جزئیات بروزرسانی شد"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "OrderDetails"
+        ],
+        "summary": "حذف جزئیات سفارش",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "جزئیات حذف شد"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "CustomerID": {
+            "type": "integer"
+          },
+          "FullName": {
+            "type": "string"
+          },
+          "Phone": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          }
+        }
+      },
+      "CustomerCreate": {
+        "type": "object",
+        "required": [
+          "FullName"
+        ],
+        "properties": {
+          "FullName": {
+            "type": "string"
+          },
+          "Phone": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "ProductID": {
+            "type": "integer"
+          },
+          "ProductName": {
+            "type": "string"
+          },
+          "Price": {
+            "type": "number"
+          },
+          "Stock": {
+            "type": "integer"
+          }
+        }
+      },
+      "ProductCreate": {
+        "type": "object",
+        "required": [
+          "ProductName",
+          "Price"
+        ],
+        "properties": {
+          "ProductName": {
+            "type": "string"
+          },
+          "Price": {
+            "type": "number"
+          },
+          "Stock": {
+            "type": "integer"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "OrderID": {
+            "type": "integer"
+          },
+          "CustomerID": {
+            "type": "integer"
+          },
+          "OrderDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "TotalAmount": {
+            "type": "number"
+          }
+        }
+      },
+      "OrderCreate": {
+        "type": "object",
+        "required": [
+          "CustomerID"
+        ],
+        "properties": {
+          "CustomerID": {
+            "type": "integer"
+          },
+          "TotalAmount": {
+            "type": "number"
+          }
+        }
+      },
+      "OrderUpdate": {
+        "type": "object",
+        "properties": {
+          "TotalAmount": {
+            "type": "number"
+          }
+        }
+      },
+      "OrderDetail": {
+        "type": "object",
+        "properties": {
+          "OrderDetailID": {
+            "type": "integer"
+          },
+          "OrderID": {
+            "type": "integer"
+          },
+          "ProductID": {
+            "type": "integer"
+          },
+          "Quantity": {
+            "type": "integer"
+          },
+          "UnitPrice": {
+            "type": "number"
+          }
+        }
+      },
+      "OrderDetailCreate": {
+        "type": "object",
+        "required": [
+          "OrderID",
+          "ProductID",
+          "Quantity",
+          "UnitPrice"
+        ],
+        "properties": {
+          "OrderID": {
+            "type": "integer"
+          },
+          "ProductID": {
+            "type": "integer"
+          },
+          "Quantity": {
+            "type": "integer"
+          },
+          "UnitPrice": {
+            "type": "number"
+          }
+        }
+      },
+      "OrderDetailUpdate": {
+        "type": "object",
+        "properties": {
+          "Quantity": {
+            "type": "integer"
+          },
+          "UnitPrice": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}
