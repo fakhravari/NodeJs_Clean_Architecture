@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Kiandent Node.js API",
+    "title": "Node.js API",
     "version": "1.0.0",
     "description": "مستندات کامل Swagger برای CRUD روی Customers, Products, Orders, OrderDetails"
   },

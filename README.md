@@ -1,4 +1,4 @@
-# 🧱 Kiandent Node.js API — Layered Architecture
+# 🧱 Node.js API — Layered Architecture
 
 پروژهٔ نمونهٔ **Node.js + Express + SQL Server** با معماری لایه‌ای (config/models/services/controllers/routes) و **Swagger UI** برای مستندسازی و تست CRUD مربوط به موجودیت‌های زیر:
 
