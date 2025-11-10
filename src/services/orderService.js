@@ -53,7 +53,7 @@ async function getOrderSummary() {
     ORDER BY o.OrderID DESC;
   `;
   const result = await pool.request().query(query);
-  return result.recordset;
+  return result.recordset || [];
 }
 
 // 👥 متد جدید ۲: مشتریانی که چند محصول خریدن

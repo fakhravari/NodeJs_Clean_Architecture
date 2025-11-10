@@ -4,6 +4,52 @@ const c = require('../controllers/orderController');
 
 /**
  * @swagger
+ * /orders/summary:
+ *   get:
+ *     summary: گزارش خلاصه سفارش‌ها (تعداد اقلام و مجموع مبلغ)
+ *     tags: [Orders]
+ *     responses:
+ *       200:
+ *         description: لیست خلاصه سفارش‌ها
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   OrderID: { type: integer }
+ *                   FullName: { type: string }
+ *                   ItemCount: { type: integer }
+ *                   TotalAmount: { type: number }
+ */
+router.get('/summary', c.summary);
+
+/**
+ * @swagger
+ * /orders/multi-product-customers:
+ *   get:
+ *     summary: مشتریانی که بیش از یک محصول مختلف خریده‌اند
+ *     tags: [Orders]
+ *     responses:
+ *       200:
+ *         description: لیست مشتریان با تعداد محصولات خریداری‌شده
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   CustomerID: { type: integer }
+ *                   FullName: { type: string }
+ *                   ProductsCount: { type: integer }
+ */
+router.get('/multi-product-customers', c.multiProduct);
+
+
+/**
+ * @swagger
  * tags:
  *   name: Orders
  *   description: مدیریت سفارش‌ها
@@ -108,50 +154,5 @@ router.put('/:id', c.update);
  *         description: سفارش حذف شد
  */
 router.delete('/:id', c.remove);
-
-/**
- * @swagger
- * /orders/summary:
- *   get:
- *     summary: گزارش خلاصه سفارش‌ها (تعداد اقلام و مجموع مبلغ)
- *     tags: [Orders]
- *     responses:
- *       200:
- *         description: لیست خلاصه سفارش‌ها
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   OrderID: { type: integer }
- *                   FullName: { type: string }
- *                   ItemCount: { type: integer }
- *                   TotalAmount: { type: number }
- */
-router.get('/summary', c.summary);
-
-/**
- * @swagger
- * /orders/multi-product-customers:
- *   get:
- *     summary: مشتریانی که بیش از یک محصول مختلف خریده‌اند
- *     tags: [Orders]
- *     responses:
- *       200:
- *         description: لیست مشتریان با تعداد محصولات خریداری‌شده
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   CustomerID: { type: integer }
- *                   FullName: { type: string }
- *                   ProductsCount: { type: integer }
- */
-router.get('/multi-product-customers', c.multiProduct);
 
 module.exports = router;
