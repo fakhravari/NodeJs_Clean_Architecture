@@ -9,14 +9,41 @@ const c = require('../controllers/orderController');
  *   description: مدیریت سفارش‌ها
  */
 
+/**
+ * @swagger
+ * /orders:
+ *   get:
+ *     summary: دریافت لیست همه سفارش‌ها
+ *     tags: [Orders]
+ *     responses:
+ *       200:
+ *         description: لیست سفارش‌ها برگردانده می‌شود
+ */
 router.get('/', c.list);
+
+/**
+ * @swagger
+ * /orders/{id}:
+ *   get:
+ *     summary: دریافت جزئیات سفارش بر اساس ID
+ *     tags: [Orders]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: اطلاعات سفارش برگردانده می‌شود
+ */
 router.get('/:id', c.get);
 
 /**
  * @swagger
  * /orders:
  *   post:
- *     summary: ثبت سفارش
+ *     summary: ایجاد سفارش جدید
  *     tags: [Orders]
  *     requestBody:
  *       required: true
@@ -24,15 +51,107 @@ router.get('/:id', c.get);
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - CustomerID
  *             properties:
- *               CustomerID: { type: integer }
- *               TotalAmount: { type: number }
+ *               CustomerID:
+ *                 type: integer
+ *               TotalAmount:
+ *                 type: number
  *     responses:
- *       200: { description: موفق }
+ *       200:
+ *         description: سفارش با موفقیت ایجاد شد
  */
 router.post('/', c.create);
 
+/**
+ * @swagger
+ * /orders/{id}:
+ *   put:
+ *     summary: ویرایش سفارش موجود
+ *     tags: [Orders]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               TotalAmount:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: سفارش ویرایش شد
+ */
 router.put('/:id', c.update);
+
+/**
+ * @swagger
+ * /orders/{id}:
+ *   delete:
+ *     summary: حذف سفارش بر اساس ID
+ *     tags: [Orders]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: سفارش حذف شد
+ */
 router.delete('/:id', c.remove);
+
+/**
+ * @swagger
+ * /orders/summary:
+ *   get:
+ *     summary: گزارش خلاصه سفارش‌ها (تعداد اقلام و مجموع مبلغ)
+ *     tags: [Orders]
+ *     responses:
+ *       200:
+ *         description: لیست خلاصه سفارش‌ها
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   OrderID: { type: integer }
+ *                   FullName: { type: string }
+ *                   ItemCount: { type: integer }
+ *                   TotalAmount: { type: number }
+ */
+router.get('/summary', c.summary);
+
+/**
+ * @swagger
+ * /orders/multi-product-customers:
+ *   get:
+ *     summary: مشتریانی که بیش از یک محصول مختلف خریده‌اند
+ *     tags: [Orders]
+ *     responses:
+ *       200:
+ *         description: لیست مشتریان با تعداد محصولات خریداری‌شده
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   CustomerID: { type: integer }
+ *                   FullName: { type: string }
+ *                   ProductsCount: { type: integer }
+ */
+router.get('/multi-product-customers', c.multiProduct);
 
 module.exports = router;
