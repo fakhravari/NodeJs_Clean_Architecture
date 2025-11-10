@@ -17,7 +17,14 @@ app.use('/ftp', require('./routes/ftpRoutes'));
 
 app.use('/auth', require('./routes/authRoutes'));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
+  explorer: false,
+  swaggerOptions: {
+    docExpansion: 'none', // 👈 همه تب‌ها بسته باشند
+    operationsSorter: 'alpha', // مرتب‌سازی الفبایی (اختیاری)
+    tagsSorter: 'alpha',       // مرتب‌سازی تگ‌ها (اختیاری)
+  },
+}));
 
 app.use((err, req, res, next) => {
   console.error('❌ Error:', err);

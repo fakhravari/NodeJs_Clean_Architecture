@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { getConnection, sql } = require('../config/db');
-
-const JWT_SECRET = process.env.JWT_SECRET || 'defaultsecret';
+const configUtil = require('../config/configUtil');
 
 exports.protect = async (req, res, next) => {
     try {
@@ -11,19 +10,20 @@ exports.protect = async (req, res, next) => {
 
         const token = authHeader.split(' ')[1];
 
-        // 🧠 بررسی رمزنگاری و انقضای JWT
+        // 🧩 بررسی صحت و انقضای JWT
         let decoded;
         try {
-            decoded = jwt.verify(token, JWT_SECRET); // اگر منقضی شده باشد، خطا می‌دهد
+            decoded = jwt.verify(token, configUtil.JWT_SECRET);
         } catch (err) {
             if (err.name === 'TokenExpiredError') {
-                console.log('⏰ JWT درونی منقضی شده');
+                console.log('⏰ JWT داخلی منقضی شده');
                 return res.status(401).json({ message: '⏰ توکن منقضی شده است' });
             }
+            console.log('❌ JWT نامعتبر');
             return res.status(401).json({ message: 'توکن نامعتبر است' });
         }
 
-        // 🧩 بررسی وضعیت در دیتابیس (زمان انقضا و تطابق)
+        // 🧠 بررسی توکن در دیتابیس
         const pool = await getConnection();
         const result = await pool.request()
             .input('Email', sql.NVarChar(100), decoded.email)
@@ -33,26 +33,27 @@ exports.protect = async (req, res, next) => {
         if (!user)
             return res.status(401).json({ message: 'کاربر یافت نشد' });
 
-        const now = new Date();
+        // زمان فعلی به ساعت ایران (میلادی)
+        const now = configUtil.nowTehran();
 
-        // چک ۱️⃣: اگر توکن ذخیره‌شده در DB با ارسال‌شده فرق دارد
+        // چک ۱️⃣: ناهماهنگی بین توکن درخواست و دیتابیس
         if (user.Jwt !== token) {
-            console.log('❌ توکن با دیتابیس فرق دارد');
+            console.log('❌ توکن با دیتابیس فرق دارد (احتمال login جدید)');
             return res.status(401).json({ message: 'توکن ناهماهنگ است (احتمال logout یا login جدید)' });
         }
 
-        // چک ۲️⃣: اگر زمان انقضای DB گذشته است
+        // چک ۲️⃣: زمان انقضای دیتابیس
         if (new Date(user.JwtExpiresAt) < now) {
-            console.log('⏰ توکن در DB منقضی شده');
-            return res.status(401).json({ message: '⏰ توکن در دیتابیس منقضی شده است' });
+            console.log('⏰ توکن در دیتابیس منقضی شده');
+            return res.status(401).json({ message: '⏰ توکن منقضی شده است' });
         }
 
-        // ✅ همه چیز اوکی است
+        // ✅ موفقیت
         req.user = decoded;
         next();
 
     } catch (err) {
         console.error('Auth middleware error:', err);
-        res.status(500).json({ message: 'خطای داخلی در بررسی توکن' });
+        res.status(500).json({ message: 'خطای داخلی در بررسی توکن', error: err.message });
     }
 };
