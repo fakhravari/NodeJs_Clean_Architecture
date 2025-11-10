@@ -1,0 +1,20 @@
+{
+  "name": "kiandent-nodejs-api",
+  "version": "1.0.0",
+  "description": "Layered Node.js + Express + SQL Server API with Swagger UI (Customers, Products, Orders, OrderDetails)",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "mssql": "^10.0.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
