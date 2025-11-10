@@ -1,6 +1,4 @@
 const ftp = require('basic-ftp');
-const fs = require('fs');
-const path = require('path');
 
 // تنظیمات اتصال به FTP
 const ftpConfig = {

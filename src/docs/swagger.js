@@ -13,7 +13,7 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Kiandent Node.js API (Dynamic)',
+      title: 'Node.js API (Dynamic)',
       version: '1.0.0',
       description: 'CRUD برای Customers, Products, Orders, OrderDetails با تشخیص خودکار محیط',
     },
