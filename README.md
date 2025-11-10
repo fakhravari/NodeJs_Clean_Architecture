@@ -3,6 +3,11 @@
 پروژهٔ API با Node.js/Express و SQL Server که با اصول معماری تمیز (لایه‌ای + Utility Singleton) پیاده‌سازی شده.  
 ویژگی‌های مهم: احراز هویت JWT (انقضای پیش‌فرض ۱ دقیقه)، مستندسازی کامل با Swagger، کانفیگ متمرکز با ConfigUtil، و ابزارهای FTP برای مدیریت فایل‌ها.
 
+
+در آدرس زیر قابل مشاهده است:  
+[https://nodejs-clean-architecture.onrender.com/api-docs](https://nodejs-clean-architecture.onrender.com/api-docs)
+
+
 ## فهرست
 - معماری و تکنولوژی‌ها
 - ساختار پوشه‌ها
