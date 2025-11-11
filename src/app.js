@@ -35,10 +35,14 @@ app.use((err, req, res, next) => {
   console.error(`ErrorId=${errorId}`, { message: err.message, stack: err.stack, code: err.code, details: err.details });
 
   if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
-      success: false,
-      error: { statusCode: err.statusCode, code: err.code, message: err.message },
-    });
+    const errorBody = {
+      statusCode: err.statusCode,
+      code: err.code,
+      message: err.message,
+    };
+    if (err.details) errorBody.details = err.details;
+
+    return res.status(err.statusCode).json({ success: false, error: errorBody });
   }
 
   res.status(500).json({
