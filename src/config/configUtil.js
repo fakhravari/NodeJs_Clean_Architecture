@@ -50,7 +50,7 @@ class ConfigUtil {
     // ⏰ محاسبه زمان انقضای JWT
     getExpiryDateTehran() {
         const issued = this.nowTehran();
-        return new Date(issued.getTime() + 1 * 60 * 1000); // همیشه ۱ دقیقه
+        return new Date(issued.getTime() + (parseInt(this.JWT_EXPIRES_IN) * 60 * 1000));
     }
 
     // 🧩 تنظیمات JWT برای استفاده مستقیم

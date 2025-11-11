@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./docs/swagger');
+const { v4: uuidv4 } = require('uuid');
+const AppError = require('./utils/AppError');
 
 const app = express();
 app.use(cors());
@@ -27,8 +29,27 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
 }));
 
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err);
-  res.status(500).json({ message: 'Internal Server Error', error: err.message });
+  const isProd = process.env.NODE_ENV === 'production';
+  const errorId = uuidv4();
+
+  console.error(`ErrorId=${errorId}`, { message: err.message, stack: err.stack, code: err.code, details: err.details });
+
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      success: false,
+      error: { statusCode: err.statusCode, code: err.code, message: err.message },
+    });
+  }
+
+  res.status(500).json({
+    success: false,
+    error: {
+      statusCode: 500,
+      code: 'INTERNAL_SERVER_ERROR',
+      message: isProd ? 'Internal Server Error' : err.message,
+      errorId,
+    },
+  });
 });
 
 const PORT = process.env.PORT || 3000;
