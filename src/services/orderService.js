@@ -1,5 +1,6 @@
 const { sql, getConnection } = require('../config/db');
 const model = require('../models/orderModel');
+const { formatDateToYMD, escapeSingleQuotes } = require('../utils/viewHelpers');
 
 // CRUD پایه
 async function getAll() {
@@ -72,6 +73,33 @@ async function getCustomersWithMultipleProducts() {
   return result.recordset;
 }
 
+// ----------------------------
+// View-based methods for GetAllOrders
+// The view (or table-valued function) is referenced as [dbo].[GetAllOrders]
+// Expected fields: OrderID, CustomerID, OrderDate, TotalAmount, JsonDetails
+async function getAllFromView() {
+  const pool = await getConnection();
+  const query = `SELECT OrderID, CustomerID, OrderDate, TotalAmount, JsonDetails FROM [dbo].[GetAllOrders]`;
+  const result = await pool.request().query(query);
+  return result.recordset || [];
+}
+
+// Return rows formatted like:
+// ( 3, 1, N'1404/08/19', 222222.00, NULL ),
+// Each row is a string. Date is formatted as YYYY/MM/DD (if available).
+async function getAllFromViewFormatted() {
+  const rows = await getAllFromView();
+  return rows.map(r => {
+    const orderId = r.OrderID != null ? r.OrderID : 'NULL';
+    const customerId = r.CustomerID != null ? r.CustomerID : 'NULL';
+    const orderDate = r.OrderDate ? formatDateToYMD(r.OrderDate) : null;
+    const total = (r.TotalAmount != null) ? Number(r.TotalAmount).toFixed(2) : '0.00';
+    const jsonDetails = r.JsonDetails != null ? `N'${escapeSingleQuotes(r.JsonDetails)}'` : 'NULL';
+    const datePart = orderDate ? `N'${escapeSingleQuotes(orderDate)}'` : 'NULL';
+    return `(${orderId}, ${customerId}, ${datePart}, ${total}, ${jsonDetails})`;
+  });
+}
+
 module.exports = {
   getAll,
   getById,
@@ -80,4 +108,5 @@ module.exports = {
   remove,
   getOrderSummary,
   getCustomersWithMultipleProducts
+  , getAllFromView, getAllFromViewFormatted
 };

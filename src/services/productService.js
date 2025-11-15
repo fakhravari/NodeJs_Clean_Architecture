@@ -19,7 +19,7 @@ async function create(data) {
   const pool = await getConnection();
   await pool.request()
     .input('ProductName', sql.NVarChar, data.ProductName)
-    .input('Price', sql.Decimal(10,2), data.Price)
+    .input('Price', sql.Decimal(10, 2), data.Price)
     .input('Stock', sql.Int, data.Stock)
     .query(`INSERT INTO ${model.tableName} (ProductName, Price, Stock)
             VALUES (@ProductName, @Price, @Stock)`);
@@ -30,7 +30,7 @@ async function update(id, data) {
   await pool.request()
     .input('id', sql.Int, id)
     .input('ProductName', sql.NVarChar, data.ProductName)
-    .input('Price', sql.Decimal(10,2), data.Price)
+    .input('Price', sql.Decimal(10, 2), data.Price)
     .input('Stock', sql.Int, data.Stock)
     .query(`UPDATE ${model.tableName}
             SET ProductName=@ProductName, Price=@Price, Stock=@Stock

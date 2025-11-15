@@ -9,3 +9,13 @@ exports.update = asyncHandler(async (req, res) => { await service.update(req.par
 exports.remove = asyncHandler(async (req, res) => { await service.remove(req.params.id); res.status(204).json({ success: true, message: 'سفارش حذف شد' }); });
 exports.summary = asyncHandler(async (req, res) => { const data = await service.getOrderSummary(); res.json({ success: true, data }); });
 exports.multiProduct = asyncHandler(async (req, res) => { const data = await service.getCustomersWithMultipleProducts(); res.json({ success: true, data }); });
+
+exports.listView = asyncHandler(async (req, res) => {
+    const data = await service.getAllFromView();
+    res.json({ success: true, data });
+});
+
+exports.listViewFormatted = asyncHandler(async (req, res) => {
+    const data = await service.getAllFromViewFormatted();
+    res.json({ success: true, data });
+});

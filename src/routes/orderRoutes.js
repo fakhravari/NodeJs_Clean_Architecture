@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const c = require('../controllers/orderController');
 const { body, param } = require('express-validator');
+const { query } = require('express-validator');
 const validate = require('../middleware/validate');
 
 /**
@@ -68,6 +69,30 @@ router.get('/multi-product-customers', c.multiProduct);
  *         description: لیست سفارش‌ها برگردانده می‌شود
  */
 router.get('/', c.list);
+
+/**
+ * @swagger
+ * /orders/view:
+ *   get:
+ *     summary: دریافت سفارش‌ها از View/TVF [dbo].[GetAllOrders]
+ *     tags: [Orders]
+ *     responses:
+ *       200:
+ *         description: لیست سفارش‌ها (فیلدها — OrderID, CustomerID, OrderDate, TotalAmount, JsonDetails)
+ */
+router.get('/view', c.listView);
+
+/**
+ * @swagger
+ * /orders/view/formatted:
+ *   get:
+ *     summary: دریافت سفارش‌ها با فرمت ویو مدل (SQL tuple strings)
+ *     tags: [Orders]
+ *     responses:
+ *       200:
+ *         description: لیست ردیف‌ها به صورت رشته‌های فرمت‌شده
+ */
+router.get('/view/formatted', c.listViewFormatted);
 
 /**
  * @swagger
