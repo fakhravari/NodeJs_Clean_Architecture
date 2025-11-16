@@ -8,7 +8,7 @@ const AppError = require("../utils/AppError");
 const {
   generateAccessToken,
   generateRefreshToken,
-  getRefreshExpiryDays,
+  verifyAndGetExpireDate,
 } = require("../utils/authHelpers");
 
 exports.register = asyncHandler(async (req, res) => {
@@ -87,7 +87,10 @@ exports.login = asyncHandler(async (req, res) => {
       "کاربر یا رمز عبور اشتباه است"
     );
 
-  const jwtConfig = configUtil.getJwtConfig();
+  const varifyExpireDate = verifyAndGetExpireDate(user.Jwt, Email);
+  if (varifyExpireDate.valid === false) {
+    throw new AppError(401, "INVALID_CREDENTIALS", "توکن مشکل دارد");
+  }
 
   res.json({
     success: true,
@@ -119,7 +122,8 @@ exports.refresh = asyncHandler(async (req, res) => {
   const accessToken = generateAccessToken(user.Email, user.FullName);
   const newRefreshToken = generateRefreshToken();
   const refreshExpiry = new Date(
-    now.getTime() + getRefreshExpiryDays() * 24 * 60 * 60 * 1000
+    now.getTime() +
+      (Number(process.env.REFRESH_EXPIRES_DAYS) || 30) * 24 * 60 * 60 * 1000
   );
 
   try {
