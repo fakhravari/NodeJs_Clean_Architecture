@@ -9,6 +9,7 @@ const {
   generateAccessToken,
   generateRefreshToken,
   verifyAndGetExpireDate,
+  verifyToken,
 } = require("../utils/authHelpers");
 
 exports.register = asyncHandler(async (req, res) => {
@@ -87,7 +88,11 @@ exports.login = asyncHandler(async (req, res) => {
       "کاربر یا رمز عبور اشتباه است"
     );
 
-  const varifyExpireDate = verifyAndGetExpireDate(user.Jwt, Email, user.JwtExpiresAt);
+  const varifyExpireDate = verifyAndGetExpireDate(
+    user.Jwt,
+    Email,
+    user.JwtExpiresAt
+  );
   if (varifyExpireDate.valid === false) {
     throw new AppError(401, "INVALID_CREDENTIALS", "توکن مشکل دارد");
   }
@@ -114,36 +119,46 @@ exports.refresh = asyncHandler(async (req, res) => {
   if (!user)
     throw new AppError(401, "INVALID_REFRESH", "Refresh token not found");
 
-  const now = new Date();
-  if (!user.JwtExpiresAt || new Date(user.JwtExpiresAt) < now) {
-    throw new AppError(401, "REFRESH_EXPIRED", "Refresh token expired");
+  const toeknn = verifyToken(user.Jwt, user.Email);
+  if (toeknn.valid === false) {
+    throw new AppError(401, "INVALID_REFRESH", "token not Valid");
   }
 
-  const accessToken = generateAccessToken(user.Email, user.FullName);
+  const jwtConfig = configUtil.getJwtConfig();
+  const newAccessToken = generateAccessToken(user.Email, user.FullName);
   const newRefreshToken = generateRefreshToken();
-  const refreshExpiry = new Date(
-    now.getTime() +
-      (Number(process.env.REFRESH_EXPIRES_DAYS) || 30) * 24 * 60 * 60 * 1000
-  );
+  const expireDate = jwtConfig.expireDate;
+  const issuedAt = jwtConfig.issuedAt;
 
   try {
-    await pool
+    const result = await pool
       .request()
       .input("Email", sql.NVarChar(250), user.Email)
-      .input("RefreshToken", sql.NVarChar(sql.MAX), newRefreshToken)
-      .input("JwtExpiresAt", sql.DateTime, refreshExpiry)
+      .input("OldRefreshToken", sql.NVarChar(sql.MAX), refreshToken)
+      .input("NewAccessToken", sql.NVarChar(sql.MAX), newAccessToken)
+      .input("NewRefreshToken", sql.NVarChar(sql.MAX), newRefreshToken)
+      .input("JwtExpiresAt", sql.DateTime, expireDate)
+      .input("JwtIssuedAt", sql.DateTime, issuedAt)
       .query(
-        `UPDATE Users SET RefreshToken=@RefreshToken, JwtExpiresAt=@JwtExpiresAt WHERE Email=@Email`
+        `UPDATE Users SET Jwt=@NewAccessToken,RefreshToken=@NewRefreshToken,JwtExpiresAt=@JwtExpiresAt,JwtIssuedAt=@JwtIssuedAt WHERE Email=@Email and RefreshToken=@OldRefreshToken`
       );
+
+    if (result.rowsAffected[0] === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Could not revoke refresh token",
+      });
+    }
   } catch (e) {
     console.error("Could not rotate refresh token in DB:", e.message || e);
   }
 
   res.json({
     success: true,
-    accessToken,
-    refreshToken: newRefreshToken,
-    expiresAt: refreshExpiry,
+    newAccessToken,
+    newRefreshToken,
+    expireDate,
+    issuedAt,
   });
 });
 
@@ -154,14 +169,35 @@ exports.logout = asyncHandler(async (req, res) => {
 
   const pool = await getConnection();
   try {
-    await pool
+    const findResult = await pool
+      .request()
+      .input("RefreshToken", sql.NVarChar(sql.MAX), refreshToken)
+      .query(`SELECT Id FROM Users WHERE RefreshToken = @RefreshToken`);
+
+    if (findResult.recordset.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Refresh token not found",
+      });
+    }
+
+    const updateResult = await pool
       .request()
       .input("RefreshToken", sql.NVarChar(sql.MAX), refreshToken)
       .query(
-        `UPDATE Users SET RefreshToken=NULL WHERE RefreshToken=@RefreshToken`
+        `UPDATE Users SET RefreshToken = '-', Jwt = '-' WHERE RefreshToken = @RefreshToken`
       );
+    if (updateResult.rowsAffected[0] === 0) {
+      return res.status(500).json({
+        success: false,
+        message: "Could not revoke refresh token",
+      });
+    }
   } catch (e) {
-    console.error("Could not revoke refresh token in DB:", e.message || e);
+    return res.status(400).json({
+      success: false,
+      message: "Refresh token not found",
+    });
   }
 
   res.json({ success: true, message: "Logged out" });
