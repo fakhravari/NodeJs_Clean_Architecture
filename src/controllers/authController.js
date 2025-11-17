@@ -21,7 +21,7 @@ exports.register = asyncHandler(async (req, res) => {
 
   const check = await pool
     .request()
-    .input("Email", sql.NVarChar(250), Email)
+    .input("Email", sql.NVarChar, Email)
     .query("SELECT Email FROM Users WHERE Email=@Email");
   if (check.recordset.length > 0)
     throw new AppError(409, "EMAIL_EXISTS", "ایمیل قبلاً ثبت شده است");
@@ -40,23 +40,22 @@ exports.register = asyncHandler(async (req, res) => {
 
   await pool
     .request()
-    .input("FullName", sql.NVarChar(350), FullName)
-    .input("Email", sql.NVarChar(250), Email)
-    .input("Password", sql.NVarChar(255), hashedPassword)
-    .input("Password2", sql.NVarChar(255), Password)
-    .input("Jwt", sql.NVarChar(sql.MAX), accessToken)
-    .input("RefreshToken", sql.NVarChar(sql.MAX), refreshToken)
-    .input("JwtIssuedAt", sql.NVarChar(50), tokenIssuedAt)
-    .input("JwtExpiresAt", sql.NVarChar(50), tokenExpiresAt)
+    .input("FullName", sql.NVarChar, FullName)
+    .input("Email", sql.NVarChar, Email)
+    .input("Password", sql.NVarChar, hashedPassword)
+    .input("Password2", sql.NVarChar, Password)
+    .input("Jwt", sql.NVarChar, accessToken)
+    .input("RefreshToken", sql.NVarChar, refreshToken)
+    .input("JwtIssuedAt", sql.NVarChar, tokenIssuedAt)
+    .input("JwtExpiresAt", sql.NVarChar, tokenExpiresAt)
     .query(insertQuery);
-
 
 
   const resultUser = await pool
     .request()
-    .input("Email", sql.NVarChar(250), Email)
+    .input("Email", sql.NVarChar, Email)
     .query(
-      "SELECT *, CONVERT(NVARCHAR(50), JwtExpiresAt, 121) AS JwtExpiresAt, CONVERT(NVARCHAR(50), JwtIssuedAt, 121) AS JwtIssuedAt FROM Users WHERE Email=@Email"
+      "SELECT *, CONVERT(NVARCHAR, JwtExpiresAt, 121) AS JwtExpiresAt, CONVERT(NVARCHAR, JwtIssuedAt, 121) AS JwtIssuedAt FROM Users WHERE Email=@Email"
     );
 
   const user = resultUser.recordset[0];
@@ -76,9 +75,9 @@ exports.login = asyncHandler(async (req, res) => {
   const pool = await getConnection();
   const result = await pool
     .request()
-    .input("Email", sql.NVarChar(250), Email)
+    .input("Email", sql.NVarChar, Email)
     .query(
-      "SELECT *, CONVERT(NVARCHAR(50), JwtExpiresAt, 121) AS JwtExpiresAt, CONVERT(NVARCHAR(50), JwtIssuedAt, 121) AS JwtIssuedAt FROM Users WHERE Email=@Email"
+      "SELECT *, CONVERT(NVARCHAR, JwtExpiresAt, 121) AS JwtExpiresAt, CONVERT(NVARCHAR, JwtIssuedAt, 121) AS JwtIssuedAt FROM Users WHERE Email=@Email"
     );
 
   const user = result.recordset[0];
@@ -121,9 +120,9 @@ exports.refresh = asyncHandler(async (req, res) => {
   const pool = await getConnection();
   const result = await pool
     .request()
-    .input("RefreshToken", sql.NVarChar(sql.MAX), refreshToken)
+    .input("RefreshToken", sql.NVarChar, refreshToken)
     .query(
-      "SELECT *, CONVERT(NVARCHAR(50), JwtExpiresAt, 121) AS JwtExpiresAt, CONVERT(NVARCHAR(50), JwtIssuedAt, 121) AS JwtIssuedAt FROM Users WHERE RefreshToken=@RefreshToken"
+      "SELECT *, CONVERT(NVARCHAR, JwtExpiresAt, 121) AS JwtExpiresAt, CONVERT(NVARCHAR, JwtIssuedAt, 121) AS JwtIssuedAt FROM Users WHERE RefreshToken=@RefreshToken"
     );
 
   const user = result.recordset[0];
@@ -151,12 +150,12 @@ exports.refresh = asyncHandler(async (req, res) => {
 
   const updateResult = await pool
     .request()
-    .input("Email", sql.NVarChar(250), user.Email)
-    .input("OldRefreshToken", sql.NVarChar(sql.MAX), refreshToken)
-    .input("NewAccessToken", sql.NVarChar(sql.MAX), newAccessToken)
-    .input("NewRefreshToken", sql.NVarChar(sql.MAX), newRefreshToken)
-    .input("JwtExpiresAt", sql.NVarChar(50), newTokenExpiresAt)
-    .input("JwtIssuedAt", sql.NVarChar(50), newTokenIssuedAt)
+    .input("Email", sql.NVarChar, user.Email)
+    .input("OldRefreshToken", sql.NVarChar, refreshToken)
+    .input("NewAccessToken", sql.NVarChar, newAccessToken)
+    .input("NewRefreshToken", sql.NVarChar, newRefreshToken)
+    .input("JwtExpiresAt", sql.NVarChar, newTokenExpiresAt)
+    .input("JwtIssuedAt", sql.NVarChar, newTokenIssuedAt)
     .query(updateQuery);
 
   if (updateResult.rowsAffected[0] === 0) {
@@ -180,7 +179,7 @@ exports.logout = asyncHandler(async (req, res) => {
   const pool = await getConnection();
   const findResult = await pool
     .request()
-    .input("RefreshToken", sql.NVarChar(sql.MAX), refreshToken)
+    .input("RefreshToken", sql.NVarChar, refreshToken)
     .query("SELECT Id FROM Users WHERE RefreshToken = @RefreshToken");
 
   if (findResult.recordset.length === 0) {
@@ -191,7 +190,7 @@ exports.logout = asyncHandler(async (req, res) => {
     "UPDATE Users SET RefreshToken = '-', Jwt = '-' WHERE RefreshToken = @RefreshToken";
   const updateResult = await pool
     .request()
-    .input("RefreshToken", sql.NVarChar(sql.MAX), refreshToken)
+    .input("RefreshToken", sql.NVarChar, refreshToken)
     .query(updateQuery);
 
   if (updateResult.rowsAffected[0] === 0) {
