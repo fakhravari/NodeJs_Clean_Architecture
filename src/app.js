@@ -5,6 +5,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./docs/swagger');
 const { v4: uuidv4 } = require('uuid');
 const AppError = require('./utils/AppError');
+const { closeConnection } = require('./config/db');
 
 const app = express();
 app.use(cors());
@@ -16,7 +17,6 @@ app.use('/orders', require('./routes/orderRoutes'));
 app.use('/orderdetails', require('./routes/orderDetailRoutes'));
 
 app.use('/ftp', require('./routes/ftpRoutes'));
-
 app.use('/auth', require('./routes/authRoutes'));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
@@ -57,6 +57,27 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}/api-docs`);
+});
+
+
+
+
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM signal received: closing HTTP server');
+  server.close(async () => {
+    console.log('HTTP server closed');
+    await closeConnection();
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', async () => {
+  console.log('SIGINT signal received: closing HTTP server');
+  server.close(async () => {
+    console.log('HTTP server closed');
+    await closeConnection();
+    process.exit(0);
+  });
 });

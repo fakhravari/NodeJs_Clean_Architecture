@@ -39,9 +39,11 @@ function verifyAndGetExpireDate(tokenDb, email, expireDateDb) {
       };
     }
 
-    const expireDateToken = new Date(decoded.exp * 1000);
-    const expireDateDB = new Date(expireDateDb);
-    if (isNaN(expireDateDB.getTime())) {
+    // استفاده از helper function برای normalize کردن تاریخ‌ها
+    const expireDateToken = configUtil.parseDateFromUtcTimestamp(decoded.exp);
+    const expireDateDB = configUtil.parseDateFromDatabase(expireDateDb);
+
+    if (!expireDateDB || isNaN(expireDateDB.getTime())) {
       return {
         error: "Database expireDate is not valid",
         valid: false,
@@ -138,5 +140,5 @@ module.exports = {
   generateAccessToken,
   generateRefreshToken,
   verifyAndGetExpireDate,
-  verifyToken
+  verifyToken,
 };
