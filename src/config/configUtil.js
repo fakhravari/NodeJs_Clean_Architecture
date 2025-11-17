@@ -92,13 +92,13 @@ class ConfigUtil {
 
     if (parts) {
       return new Date(
-        parseInt(parts[1]), // year
-        parseInt(parts[2]) - 1, // month (0-based)
-        parseInt(parts[3]), // day
-        parseInt(parts[4]), // hours
-        parseInt(parts[5]), // minutes
-        parseInt(parts[6] || 0), // seconds
-        parseInt(parts[7] || 0) // milliseconds
+        parseInt(parts[1]), // 📅 سال
+        parseInt(parts[2]) - 1, // 🗓️ ماه (صفرمبنای JS)
+        parseInt(parts[3]), // 📆 روز
+        parseInt(parts[4]), // ⏰ ساعت
+        parseInt(parts[5]), // ⌛ دقیقه
+        parseInt(parts[6] || 0), // 🧭 ثانیه
+        parseInt(parts[7] || 0) // 🪫 میلی‌ثانیه
       );
     }
     return new Date(dateStr);

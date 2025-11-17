@@ -8,14 +8,14 @@ const validate = require('../middleware/validate');
  * @swagger
  * tags:
  *   name: Auth
- *   description: احراز هویت کاربران
+ *   description: 🔐 احراز هویت و مدیریت نشست کاربران
  */
 
 /**
  * @swagger
  * /auth/register:
  *   post:
- *     summary: ثبت‌نام کاربر جدید
+ *     summary: 🆕 ثبت‌نام کاربر جدید
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -30,7 +30,7 @@ const validate = require('../middleware/validate');
  *               Password: { type: string }
  *     responses:
  *       200:
- *         description: کاربر با موفقیت ثبت شد
+ *         description: ✅ کاربر با موفقیت ثبت شد
  */
 router.post('/register', [
     body('FullName').trim().notEmpty().withMessage('FullName is required'),
@@ -42,7 +42,7 @@ router.post('/register', [
  * @swagger
  * /auth/login:
  *   post:
- *     summary: ورود کاربر و دریافت JWT
+ *     summary: 🔑 ورود کاربر و دریافت JWT
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -56,7 +56,7 @@ router.post('/register', [
  *               Password: { type: string }
  *     responses:
  *       200:
- *         description: ورود موفق و دریافت توکن
+ *         description: ✅ ورود موفق و دریافت توکن
  */
 router.post('/login', [
     body('Email').isEmail().withMessage('Valid Email is required'),
@@ -67,7 +67,7 @@ router.post('/login', [
  * @swagger
  * /auth/refresh:
  *   post:
- *     summary: دریافت توکن جدید با استفاده از refresh token
+ *     summary: ♻️ دریافت توکن جدید با refresh token
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -80,7 +80,7 @@ router.post('/login', [
  *               refreshToken: { type: string }
  *     responses:
  *       200:
- *         description: توکن جدید صادر شد
+ *         description: 🔄 توکن جدید صادر شد
  */
 router.post('/refresh', [body('refreshToken').notEmpty().withMessage('refreshToken is required')], validate, auth.refresh);
 
@@ -88,7 +88,7 @@ router.post('/refresh', [body('refreshToken').notEmpty().withMessage('refreshTok
  * @swagger
  * /auth/logout:
  *   post:
- *     summary: خروج و لغو refresh token
+ *     summary: 🚪 خروج و لغو refresh token
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -101,7 +101,7 @@ router.post('/refresh', [body('refreshToken').notEmpty().withMessage('refreshTok
  *               refreshToken: { type: string }
  *     responses:
  *       200:
- *         description: کاربر خارج شد
+ *         description: ✅ کاربر خارج شد
  */
 router.post('/logout', [body('refreshToken').notEmpty().withMessage('refreshToken is required')], validate, auth.logout);
 

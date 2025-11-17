@@ -8,18 +8,18 @@ const validate = require('../middleware/validate');
  * @swagger
  * tags:
  *   name: OrderDetails
- *   description: جزئیات سفارش‌ها
+ *   description: 🧾 مدیریت جزئیات ریز سفارش‌ها
  */
 
 /**
  * @swagger
  * /orderdetails:
  *   get:
- *     summary: دریافت همه جزئیات سفارش‌ها
+ *     summary: 📋 مشاهده همه ردیف‌های سفارش
  *     tags: [OrderDetails]
  *     responses:
  *       200:
- *         description: لیست جزئیات سفارش‌ها
+ *         description: 📄 همه جزئیات ثبت‌شده برگردانده می‌شوند
  */
 router.get('/', c.list);
 
@@ -27,7 +27,7 @@ router.get('/', c.list);
  * @swagger
  * /orderdetails/{id}:
  *   get:
- *     summary: دریافت جزئیات یک سفارش خاص
+ *     summary: 🔍 مشاهده یک ردیف جزئیات بر اساس شناسه
  *     tags: [OrderDetails]
  *     parameters:
  *       - in: path
@@ -37,7 +37,7 @@ router.get('/', c.list);
  *           type: integer
  *     responses:
  *       200:
- *         description: جزئیات سفارش مورد نظر
+ *         description: 🧾 اطلاعات همان ردیف بازگردانده می‌شود
  */
 router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], validate, c.get);
 
@@ -45,7 +45,7 @@ router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], v
  * @swagger
  * /orderdetails:
  *   post:
- *     summary: افزودن جزئیات سفارش جدید
+ *     summary: ➕ ثبت ردیف جدید برای سفارش
  *     tags: [OrderDetails]
  *     requestBody:
  *       required: true
@@ -65,7 +65,7 @@ router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], v
  *               UnitPrice: { type: number }
  *     responses:
  *       200:
- *         description: جزئیات سفارش اضافه شد
+ *         description: ✅ ردیف جدید ذخیره شد
  */
 router.post('/', [
     body('OrderID').isInt().withMessage('OrderID is required and must be an integer'),
@@ -78,7 +78,7 @@ router.post('/', [
  * @swagger
  * /orderdetails/{id}:
  *   put:
- *     summary: ویرایش جزئیات سفارش
+ *     summary: ✏️ بروزرسانی یک ردیف جزئیات
  *     tags: [OrderDetails]
  *     parameters:
  *       - in: path
@@ -97,7 +97,7 @@ router.post('/', [
  *               UnitPrice: { type: number }
  *     responses:
  *       200:
- *         description: بروزرسانی جزئیات سفارش
+ *         description: 🔄 تغییرات اعمال شد
  */
 router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), body('Quantity').optional().isInt().withMessage('Quantity must be an integer'), body('UnitPrice').optional().isNumeric().withMessage('UnitPrice must be a number')], validate, c.update);
 
@@ -105,7 +105,7 @@ router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), bo
  * @swagger
  * /orderdetails/{id}:
  *   delete:
- *     summary: حذف جزئیات سفارش
+ *     summary: 🗑️ حذف ردیف جزئیات سفارش
  *     tags: [OrderDetails]
  *     parameters:
  *       - in: path
@@ -115,7 +115,7 @@ router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), bo
  *           type: integer
  *     responses:
  *       200:
- *         description: جزئیات سفارش حذف شد
+ *         description: ✅ ردیف موردنظر حذف شد
  */
 router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], validate, c.remove);
 
@@ -123,7 +123,7 @@ router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')]
  * @swagger
  * /orderdetails/order/{orderId}:
  *   get:
- *     summary: دریافت جزئیات سفارش به همراه محصولاتش
+ *     summary: 🛒 مشاهده جزئیات سفارش همراه اطلاعات محصولات
  *     tags: [OrderDetails]
  *     parameters:
  *       - in: path
@@ -133,7 +133,7 @@ router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')]
  *           type: integer
  *     responses:
  *       200:
- *         description: لیست محصولات مرتبط با سفارش
+ *         description: 📦 محصولات مربوط به سفارش بازگردانده می‌شوند
  *         content:
  *           application/json:
  *             schema:

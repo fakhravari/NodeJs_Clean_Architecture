@@ -2,7 +2,7 @@ const { sql, getConnection } = require("../config/db");
 const model = require("../models/orderModel");
 require("../utils/viewHelpers");
 
-// CRUD پایه
+// 🧱 عملیات پایه سفارش
 async function getAll() {
   const pool = await getConnection();
   const result = await pool.request().query(`SELECT * FROM ${model.tableName}`);
@@ -47,7 +47,7 @@ async function remove(id) {
     .query(`DELETE FROM ${model.tableName} WHERE OrderID=@id`);
 }
 
-// 📊 متد جدید ۱: خلاصه سفارش‌ها
+// 📊 خلاصه وضعیت سفارش‌ها و جمع مبالغ
 async function getOrderSummary() {
   const pool = await getConnection();
   const query = `
@@ -63,7 +63,7 @@ async function getOrderSummary() {
   return result.recordset || [];
 }
 
-// 👥 متد جدید ۲: مشتریانی که چند محصول خریدن
+// 🤝 مشتریانی که بیش از یک محصول خریده‌اند
 async function getCustomersWithMultipleProducts() {
   const pool = await getConnection();
   const query = `

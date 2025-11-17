@@ -22,9 +22,9 @@ app.use('/auth', require('./routes/authRoutes'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
   explorer: false,
   swaggerOptions: {
-    docExpansion: 'none', // 👈 همه تب‌ها بسته باشند
-    operationsSorter: 'alpha', // مرتب‌سازی الفبایی (اختیاری)
-    tagsSorter: 'alpha',       // مرتب‌سازی تگ‌ها (اختیاری)
+    docExpansion: 'none', // 📑 بازنشدن خودکار تب‌ها
+    operationsSorter: 'alpha', // 🔤 مرتب‌سازی بر اساس نام متدها
+    tagsSorter: 'alpha',       // 🏷️ چیدمان الفبایی تگ‌ها
   },
 }));
 

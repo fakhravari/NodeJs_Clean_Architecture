@@ -9,18 +9,18 @@ const validate = require('../middleware/validate');
  * @swagger
  * tags:
  *   name: Products
- *   description: مدیریت محصولات
+ *   description: 🛍️ مدیریت و بروزرسانی محصولات
  */
 
 /**
  * @swagger
  * /products:
  *   get:
- *     summary: دریافت لیست همه محصولات
+ *     summary: 🗂️ دریافت لیست همه محصولات
  *     tags: [Products]
  *     responses:
  *       200:
- *         description: لیست محصولات برگردانده می‌شود
+ *         description: ✅ لیست محصولات برگردانده می‌شود
  */
 router.get('/', c.list);
 
@@ -28,7 +28,7 @@ router.get('/', c.list);
  * @swagger
  * /products/{id}:
  *   get:
- *     summary: دریافت جزئیات محصول بر اساس ID
+ *     summary: 🔍 دریافت جزئیات محصول بر اساس ID
  *     tags: [Products]
  *     parameters:
  *       - in: path
@@ -38,7 +38,7 @@ router.get('/', c.list);
  *           type: integer
  *     responses:
  *       200:
- *         description: اطلاعات محصول برگردانده می‌شود
+ *         description: 🧾 اطلاعات محصول برگردانده می‌شود
  */
 router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], validate, c.get);
 
@@ -46,7 +46,7 @@ router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], v
  * @swagger
  * /products:
  *   post:
- *     summary: افزودن محصول جدید
+ *     summary: ➕ افزودن محصول جدید
  *     tags: [Products]
  *     requestBody:
  *       required: true
@@ -66,7 +66,7 @@ router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], v
  *                 type: integer
  *     responses:
  *       200:
- *         description: محصول با موفقیت اضافه شد
+ *         description: ✅ محصول با موفقیت اضافه شد
  */
 router.post('/', protect, [
     body('ProductName').trim().notEmpty().withMessage('ProductName is required'),
@@ -78,7 +78,7 @@ router.post('/', protect, [
  * @swagger
  * /products/{id}:
  *   put:
- *     summary: ویرایش اطلاعات محصول
+ *     summary: ✏️ ویرایش اطلاعات محصول
  *     tags: [Products]
  *     parameters:
  *       - in: path
@@ -101,7 +101,7 @@ router.post('/', protect, [
  *                 type: integer
  *     responses:
  *       200:
- *         description: محصول بروزرسانی شد
+ *         description: 🔄 محصول بروزرسانی شد
  */
 router.put('/:id', [
     param('id').isInt().withMessage('id must be an integer'),
@@ -114,7 +114,7 @@ router.put('/:id', [
  * @swagger
  * /products/{id}:
  *   delete:
- *     summary: حذف محصول بر اساس ID
+ *     summary: 🗑️ حذف محصول بر اساس ID
  *     tags: [Products]
  *     parameters:
  *       - in: path
@@ -124,7 +124,7 @@ router.put('/:id', [
  *           type: integer
  *     responses:
  *       200:
- *         description: محصول حذف شد
+ *         description: ✅ محصول حذف شد
  */
 router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], validate, c.remove);
 

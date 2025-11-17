@@ -39,7 +39,7 @@ function verifyAndGetExpireDate(tokenDb, email, expireDateDb) {
       };
     }
 
-    // استفاده از helper function برای normalize کردن تاریخ‌ها
+    // ⏱️ استفاده از توابع کمکی برای هماهنگی تاریخ‌ها
     const expireDateToken = configUtil.parseDateFromUtcTimestamp(decoded.exp);
     const expireDateDB = configUtil.parseDateFromDatabase(expireDateDb);
 

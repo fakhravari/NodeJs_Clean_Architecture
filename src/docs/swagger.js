@@ -1,10 +1,10 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 
-// 🧠 تشخیص خودکار محیط
+// 🌐 تعیین خودکار محیط اجرا
 const isRender = !!process.env.RENDER;
 const isProduction = process.env.NODE_ENV === 'production';
 
-// 🧩 آدرس سرور داینامیک
+// 🔗 ساخت آدرس پایه متناسب با محیط
 const baseUrl =
   process.env.BASE_URL ||
   (isRender ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}` : `http://localhost:3000`);
@@ -25,7 +25,7 @@ const options = {
       },
     ],
 
-    // ✅ بخش اضافه‌شده برای JWT Auth
+    // 🛡️ تعریف طرح امنیتی JWT
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -38,7 +38,7 @@ const options = {
       },
     },
 
-    // 🔒 اعمال امنیت برای تمام مسیرها به صورت پیش‌فرض
+    // 🔒 اعمال پیش‌فرض امنیت روی همه مسیرها
     security: [
       {
         bearerAuth: [],
@@ -46,7 +46,7 @@ const options = {
     ],
   },
 
-  // مسیر فایل‌های روت
+  // 📂 تعریف مسیر فایل‌های روت برای تولید مستندات
   apis: ['./src/routes/*.js'],
 };
 

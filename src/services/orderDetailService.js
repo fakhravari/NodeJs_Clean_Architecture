@@ -1,7 +1,7 @@
 const { sql, getConnection } = require('../config/db');
 const model = require('../models/orderDetailModel');
 
-// CRUD پایه
+// 🧱 عملیات پایه جزئیات سفارش
 async function getAll() {
   const pool = await getConnection();
   const result = await pool.request().query(`SELECT * FROM ${model.tableName}`);
@@ -45,7 +45,7 @@ async function remove(id) {
     .query(`DELETE FROM ${model.tableName} WHERE OrderDetailID=@id`);
 }
 
-// 🧾 متد جدید: جزئیات سفارش همراه محصولات
+// 🧾 جزئیات سفارش همراه اطلاعات محصولات
 async function getOrderWithProducts(orderId) {
   const pool = await getConnection();
   const query = `

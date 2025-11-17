@@ -7,8 +7,7 @@ async function getAll() {
   return result.recordset;
 }
 
-// Standalone stored-proc caller: dbo.GetAllCustomers(@Id INT=0)
-// This function is independent and does not depend on other service methods.
+// 🛰️ اجرای مستقل dbo.GetAllCustomers با ورودی اختیاری
 async function getAllFromProc(id = 0) {
   const pool = await getConnection();
   const request = pool.request();

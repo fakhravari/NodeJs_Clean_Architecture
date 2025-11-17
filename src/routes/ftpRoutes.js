@@ -10,25 +10,25 @@ const validate = require('../middleware/validate');
  * @swagger
  * tags:
  *   name: FTP
- *   description: مدیریت فایل‌ها روی سرور FTP
+ *   description: 🧱 جابه‌جایی و مدیریت فایل‌ها روی سرور FTP
  */
 
 /**
  * @swagger
  * /ftp:
  *   get:
- *     summary: لیست همه فایل‌ها روی سرور FTP
+ *     summary: 📃 مشاهده فهرست فایل‌های سرور
  *     tags: [FTP]
  *     responses:
  *       200:
- *         description: لیست فایل‌ها با اطلاعات
+ *         description: 🔎 فایل‌ها همراه جزئیات پایه برگردانده می‌شوند
  */
 
 /**
  * @swagger
  * /ftp/upload:
  *   post:
- *     summary: آپلود فایل روی سرور FTP
+ *     summary: ⬆️ ارسال فایل جدید به سرور
  *     tags: [FTP]
  *     requestBody:
  *       required: true
@@ -42,14 +42,14 @@ const validate = require('../middleware/validate');
  *                 format: binary
  *     responses:
  *       200:
- *         description: فایل با موفقیت آپلود شد
+ *         description: ✅ فایل با موفقیت ذخیره شد
  */
 
 /**
  * @swagger
  * /ftp/download/{name}:
  *   get:
- *     summary: دانلود فایل از FTP
+ *     summary: ⬇️ دریافت فایل از FTP
  *     tags: [FTP]
  *     parameters:
  *       - in: path
@@ -57,17 +57,17 @@ const validate = require('../middleware/validate');
  *         required: true
  *         schema:
  *           type: string
- *         description: نام فایل روی سرور
+ *         description: 📁 نام دقیق فایل هدف
  *     responses:
  *       200:
- *         description: فایل برای دانلود ارسال می‌شود
+ *         description: 📩 فایل برای دانلود آماده می‌شود
  */
 
 /**
  * @swagger
  * /ftp/{name}:
  *   delete:
- *     summary: حذف فایل از سرور FTP
+ *     summary: 🗑️ پاک کردن فایل از سرور
  *     tags: [FTP]
  *     parameters:
  *       - in: path
@@ -77,7 +77,7 @@ const validate = require('../middleware/validate');
  *           type: string
  *     responses:
  *       200:
- *         description: فایل حذف شد
+ *         description: ✅ فایل با موفقیت پاک شد
  */
 
 router.get('/', ftpCtrl.list);

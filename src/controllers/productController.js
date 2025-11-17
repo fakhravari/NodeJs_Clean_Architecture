@@ -15,7 +15,7 @@ exports.get = asyncHandler(async (req, res) => {
 
 exports.create = asyncHandler(async (req, res) => {
   await service.create(req.body);
-  // service.create currently doesn't return the created object; respond with 201 and a message
+  // 📦 پاسخ ایجاد فقط پیام موفقیت برمی‌گرداند
   res.status(201).json({ success: true, message: 'محصول اضافه شد' });
 });
 

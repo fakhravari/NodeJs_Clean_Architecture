@@ -7,7 +7,7 @@ exports.list = asyncHandler(async (req, res) => {
   res.json({ success: true, data });
 });
 
-// Call stored-proc version (standalone)
+// 🧮 اجرای مستقیم نسخه استورد پروسیجر
 exports.listFromProc = asyncHandler(async (req, res) => {
   const id = req.query.Id ? Number(req.query.Id) : 0;
   const data = await service.getAllFromProc(id);

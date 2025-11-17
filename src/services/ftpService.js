@@ -1,10 +1,10 @@
 const ftp = require('basic-ftp');
-const configUtil = require('../config/configUtil'); // استفاده از کلاس سینگل‌تن
+const configUtil = require('../config/configUtil'); // ♻️ بهره‌گیری از نمونه سینگل‌تن تنظیمات
 
-// ⚙️ تنظیمات اتصال به FTP از ConfigUtil
+// 🔧 آماده‌سازی تنظیمات اتصال FTP
 const ftpConfig = configUtil.getFtpConfig();
 
-// 🧠 تابع ایجاد اتصال
+// 🌐 ساخت کلاینت FTP با اتصال ایمن
 async function getClient() {
     const client = new ftp.Client();
     client.ftp.verbose = false;
@@ -17,7 +17,7 @@ async function getClient() {
     }
 }
 
-// 📥 آپلود فایل
+// ⬆️ ارسال فایل به سرور FTP
 async function uploadFile(localPath, remoteFileName) {
     const client = await getClient();
     try {
@@ -31,7 +31,7 @@ async function uploadFile(localPath, remoteFileName) {
     }
 }
 
-// 📤 دانلود فایل
+// ⬇️ دریافت فایل از سرور FTP
 async function downloadFile(remoteFileName, localPath) {
     const client = await getClient();
     try {
@@ -45,7 +45,7 @@ async function downloadFile(remoteFileName, localPath) {
     }
 }
 
-// 🗑 حذف فایل
+// 🧺 پاک کردن فایل از مخزن
 async function deleteFile(remoteFileName) {
     const client = await getClient();
     try {
@@ -59,7 +59,7 @@ async function deleteFile(remoteFileName) {
     }
 }
 
-// 📋 لیست فایل‌ها
+// 🗂️ دریافت لیست فایل‌ها از مسیر موردنظر
 async function listFiles(remoteDir = '.') {
     const client = await getClient();
     try {

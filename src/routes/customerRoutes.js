@@ -7,19 +7,19 @@ const validate = require('../middleware/validate');
 /**
  * @swagger
  * tags:
- *   name: Customers
- *   description: مدیریت مشتریان
+  *   name: Customers
+ *   description: 🤝 مدیریت و نگهداری اطلاعات مشتریان
  */
 
 /**
  * @swagger
  * /customers:
  *   get:
- *     summary: دریافت همه مشتری‌ها
+ *     summary: 📋 مشاهده همه مشتریان
  *     tags: [Customers]
  *     responses:
  *       200:
- *         description: موفق
+ *         description: ✅ لیست مشتریان بازگردانده می‌شود
  */
 router.get('/', c.list);
 
@@ -27,7 +27,7 @@ router.get('/', c.list);
  * @swagger
  * /customers/proc:
  *   get:
- *     summary: دریافت مشتریان از طریق Stored Procedure dbo.GetAllCustomers
+ *     summary: 🧮 دریافت مشتریان از استورد پروسیجر dbo.GetAllCustomers
  *     tags: [Customers]
  *     parameters:
  *       - in: query
@@ -36,7 +36,7 @@ router.get('/', c.list);
  *         schema: { type: integer }
  *     responses:
  *       200:
- *         description: موفق
+ *         description: ✅ نتیجه اجرای پروسیجر
  */
 router.get('/proc', [query('Id').optional().isInt().withMessage('Id must be an integer')], validate, c.listFromProc);
 
@@ -44,7 +44,7 @@ router.get('/proc', [query('Id').optional().isInt().withMessage('Id must be an i
  * @swagger
  * /customers/{id}:
  *   get:
- *     summary: دریافت یک مشتری
+ *     summary: 🔍 دریافت جزئیات یک مشتری
  *     tags: [Customers]
  *     parameters:
  *       - in: path
@@ -52,7 +52,7 @@ router.get('/proc', [query('Id').optional().isInt().withMessage('Id must be an i
  *         required: true
  *         schema: { type: integer }
  *     responses:
- *       200: { description: موفق }
+ *       200: { description: ✅ جزئیات مشتری ارسال شد }
  */
 router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], validate, c.get);
 
@@ -60,7 +60,7 @@ router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], v
  * @swagger
  * /customers:
  *   post:
- *     summary: افزودن مشتری
+ *     summary: ➕ ثبت مشتری جدید
  *     tags: [Customers]
  *     requestBody:
  *       required: true
@@ -74,7 +74,7 @@ router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], v
  *               Email: { type: string }
  *               City: { type: string }
  *     responses:
- *       200: { description: موفق }
+ *       200: { description: ✅ مشتری با موفقیت ذخیره شد }
  */
 router.post('/', [
     body('FullName').trim().notEmpty().withMessage('FullName is required'),
@@ -87,7 +87,7 @@ router.post('/', [
  * @swagger
  * /customers/{id}:
  *   put:
- *     summary: بروزرسانی مشتری
+ *     summary: ✏️ بروزرسانی اطلاعات مشتری
  *     tags: [Customers]
  *     parameters:
  *       - in: path
@@ -106,7 +106,7 @@ router.post('/', [
  *               Email: { type: string }
  *               City: { type: string }
  *     responses:
- *       200: { description: موفق }
+ *       200: { description: 🔄 تغییرات اعمال شد }
  */
 router.put('/:id', [
     param('id').isInt().withMessage('id must be an integer'),
@@ -120,7 +120,7 @@ router.put('/:id', [
  * @swagger
  * /customers/{id}:
  *   delete:
- *     summary: حذف مشتری
+ *     summary: 🗑️ حذف مشتری بر اساس شناسه
  *     tags: [Customers]
  *     parameters:
  *       - in: path
@@ -128,7 +128,7 @@ router.put('/:id', [
  *         required: true
  *         schema: { type: integer }
  *     responses:
- *       200: { description: موفق }
+ *       200: { description: ✅ مشتری حذف شد }
  */
 router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], validate, c.remove);
 

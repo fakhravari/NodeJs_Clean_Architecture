@@ -9,11 +9,11 @@ const validate = require('../middleware/validate');
  * @swagger
  * /orders/summary:
  *   get:
- *     summary: گزارش خلاصه سفارش‌ها (تعداد اقلام و مجموع مبلغ)
+ *     summary: 📊 گزارش خلاصه سفارش‌ها (تعداد اقلام و مجموع مبلغ)
  *     tags: [Orders]
  *     responses:
  *       200:
- *         description: لیست خلاصه سفارش‌ها
+ *         description: 🧾 لیست خلاصه سفارش‌ها
  *         content:
  *           application/json:
  *             schema:
@@ -32,11 +32,11 @@ router.get('/summary', c.summary);
  * @swagger
  * /orders/multi-product-customers:
  *   get:
- *     summary: مشتریانی که بیش از یک محصول مختلف خریده‌اند
+ *     summary: 🤝 مشتریانی که بیش از یک محصول مختلف خریده‌اند
  *     tags: [Orders]
  *     responses:
  *       200:
- *         description: لیست مشتریان با تعداد محصولات خریداری‌شده
+ *         description: 🧮 تعداد محصولات خریداری‌شده برای هر مشتری
  *         content:
  *           application/json:
  *             schema:
@@ -54,19 +54,19 @@ router.get('/multi-product-customers', c.multiProduct);
 /**
  * @swagger
  * tags:
- *   name: Orders
- *   description: مدیریت سفارش‌ها
+  *   name: Orders
+ *   description: 🛒 مدیریت چرخه سفارش‌ها
  */
 
 /**
  * @swagger
  * /orders:
  *   get:
- *     summary: دریافت لیست همه سفارش‌ها
+ *     summary: 📜 دریافت لیست همه سفارش‌ها
  *     tags: [Orders]
  *     responses:
  *       200:
- *         description: لیست سفارش‌ها برگردانده می‌شود
+ *         description: ✅ لیست سفارش‌ها برگردانده می‌شود
  */
 router.get('/', c.list);
 
@@ -74,11 +74,11 @@ router.get('/', c.list);
  * @swagger
  * /orders/view:
  *   get:
- *     summary: دریافت سفارش‌ها از View/TVF [dbo].[GetAllOrders]
+ *     summary: 🪟 دریافت سفارش‌ها از View/TVF [dbo].[GetAllOrders]
  *     tags: [Orders]
  *     responses:
  *       200:
- *         description: لیست سفارش‌ها (فیلدها — OrderID, CustomerID, OrderDate, TotalAmount, JsonDetails)
+ *         description: 📄 خروجی حاوی OrderID, CustomerID, OrderDate, TotalAmount, JsonDetails
  */
 router.get('/view', c.listView);
 
@@ -86,11 +86,11 @@ router.get('/view', c.listView);
  * @swagger
  * /orders/view/formatted:
  *   get:
- *     summary: دریافت سفارش‌ها با فرمت ویو مدل (SQL tuple strings)
+ *     summary: 🧱 دریافت سفارش‌ها در قالب رشته SQL tuple
  *     tags: [Orders]
  *     responses:
  *       200:
- *         description: لیست ردیف‌ها به صورت رشته‌های فرمت‌شده
+ *         description: 🔤 ردیف‌ها به صورت رشته فرمت‌شده بازگردانده می‌شوند
  */
 router.get('/view/formatted', c.listViewFormatted);
 
@@ -98,7 +98,7 @@ router.get('/view/formatted', c.listViewFormatted);
  * @swagger
  * /orders/{id}:
  *   get:
- *     summary: دریافت جزئیات سفارش بر اساس ID
+ *     summary: 🔍 دریافت جزئیات سفارش بر اساس ID
  *     tags: [Orders]
  *     parameters:
  *       - in: path
@@ -108,7 +108,7 @@ router.get('/view/formatted', c.listViewFormatted);
  *           type: integer
  *     responses:
  *       200:
- *         description: اطلاعات سفارش برگردانده می‌شود
+ *         description: 🧾 اطلاعات سفارش برگردانده می‌شود
  */
 router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], validate, c.get);
 
@@ -116,7 +116,7 @@ router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], v
  * @swagger
  * /orders:
  *   post:
- *     summary: ایجاد سفارش جدید
+ *     summary: ➕ ایجاد سفارش جدید
  *     tags: [Orders]
  *     requestBody:
  *       required: true
@@ -133,7 +133,7 @@ router.get('/:id', [param('id').isInt().withMessage('id must be an integer')], v
  *                 type: number
  *     responses:
  *       200:
- *         description: سفارش با موفقیت ایجاد شد
+ *         description: ✅ سفارش با موفقیت ایجاد شد
  */
 router.post('/', [body('CustomerID').isInt().withMessage('CustomerID is required and must be an integer'), body('TotalAmount').optional().isNumeric().withMessage('TotalAmount must be a number')], validate, c.create);
 
@@ -141,7 +141,7 @@ router.post('/', [body('CustomerID').isInt().withMessage('CustomerID is required
  * @swagger
  * /orders/{id}:
  *   put:
- *     summary: ویرایش سفارش موجود
+ *     summary: ✏️ ویرایش سفارش موجود
  *     tags: [Orders]
  *     parameters:
  *       - in: path
@@ -160,7 +160,7 @@ router.post('/', [body('CustomerID').isInt().withMessage('CustomerID is required
  *                 type: number
  *     responses:
  *       200:
- *         description: سفارش ویرایش شد
+ *         description: 🔄 سفارش ویرایش شد
  */
 router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), body('TotalAmount').optional().isNumeric().withMessage('TotalAmount must be a number')], validate, c.update);
 
@@ -168,7 +168,7 @@ router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), bo
  * @swagger
  * /orders/{id}:
  *   delete:
- *     summary: حذف سفارش بر اساس ID
+ *     summary: 🗑️ حذف سفارش بر اساس ID
  *     tags: [Orders]
  *     parameters:
  *       - in: path
@@ -178,7 +178,7 @@ router.put('/:id', [param('id').isInt().withMessage('id must be an integer'), bo
  *           type: integer
  *     responses:
  *       200:
- *         description: سفارش حذف شد
+ *         description: ✅ سفارش حذف شد
  */
 router.delete('/:id', [param('id').isInt().withMessage('id must be an integer')], validate, c.remove);
 
