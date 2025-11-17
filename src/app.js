@@ -31,10 +31,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
 app.use((err, req, res, next) => {
   const isProd = process.env.NODE_ENV === 'production';
   const errorId = uuidv4();
-  
-  // for developer
-  isProd = false;
-
   console.error(`ErrorId=${errorId}`, { message: err.message, stack: err.stack, code: err.code, details: err.details });
 
   if (err instanceof AppError) {
@@ -55,6 +51,7 @@ app.use((err, req, res, next) => {
       code: 'INTERNAL_SERVER_ERROR',
       message: isProd ? 'Internal Server Error' : err.message,
       errorId,
+      message2: err
     },
   });
 });
