@@ -55,7 +55,7 @@ exports.register = asyncHandler(async (req, res) => {
     .request()
     .input("Email", sql.NVarChar, Email)
     .query(
-      "SELECT *, CONVERT(NVARCHAR, JwtExpiresAt, 121) AS JwtExpiresAt, CONVERT(NVARCHAR, JwtIssuedAt, 121) AS JwtIssuedAt FROM Users WHERE Email=@Email"
+      "SELECT * FROM Users WHERE Email=@Email"
     );
 
   const user = resultUser.recordset[0];
